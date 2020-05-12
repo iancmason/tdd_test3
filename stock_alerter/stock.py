@@ -25,7 +25,7 @@ class Stock:
             self.price_history[-2].price < self.price_history[-1].price
 
     def get_crossover_signal(self, on_date):
-        cpl = []
+        closing_price_list = []
         for i in range(11):
             chk = on_date.date() - timedelta(i)
             for price_event in reversed(self.price_history):
@@ -39,7 +39,7 @@ class Stock:
                     break
 
         # Return NEUTRAL signal
-        if len(cpl) < 11:
+        if len(closing_price_list) < 11:
             return 0
 
         # BUY signal
