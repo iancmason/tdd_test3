@@ -6,6 +6,9 @@ PriceEvent = collections.namedtuple("PriceEvent", ["timestamp", "price"])
 
 
 class Stock:
+    LONG_TERM_TIMESPAN = 10
+    SHORT_TERM_TIMESPAN = 5
+
     def __init__(self, symbol):
         self.symbol = symbol
         self.price_history = []
@@ -26,6 +29,7 @@ class Stock:
 
     def get_crossover_signal(self, on_date):
         closing_price_list = []
+        NUM_DAYS =self.LONG_TERM_TIMESPAN + 1
         for i in range(11):
             chk = on_date.date() - timedelta(i)
             for price_event in reversed(self.price_history):
