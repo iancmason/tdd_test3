@@ -1,9 +1,15 @@
 import bisect
 import collections
 from datetime import timedelta
+from enum import Enum
 
 PriceEvent = collections.namedtuple("PriceEvent", ["timestamp", "price"])
 
+
+class StockSignal(Enum):
+    buy = 1
+    neutral = 0
+    sell = -1
 
 class Stock:
     LONG_TERM_TIMESPAN = 10
@@ -61,4 +67,4 @@ class Stock:
                     return -1
 
         # NEUTRAL signal
-        return 0
+        return StockSignal.neutral
