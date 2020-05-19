@@ -48,6 +48,9 @@ class Stock:
         return closing_price_list
 
     def get_crossover_signal(self, on_date):
+        NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
+        closing_price_list = \
+            self._get_closing_price_list(on_date, NUM_DAYS)
         long_term_ma = MovingAverage(self.history, self.LONG_TERM_TIMESPAN)
         short_term_ma = MovingAverage(self.history, self.SHORT_TERM_TIMESPAN)
         try:
