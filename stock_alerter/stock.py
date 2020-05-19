@@ -48,37 +48,15 @@ class Stock:
         return closing_price_list
 
     def get_crossover_signal(self, on_date):
-        closing_price_list = []
-        NUM_DAYS =self.LONG_TERM_TIMESPAN + 1
-        for i in range(11):
-            chk = on_date.date() - timedelta(i)
-            for price_event in reversed(self.price_history):
-                if price_event.timestamp.date() > chk:
-                    pass
-                if price_event.timestamp.date() == chk:
-                    cpl.insert(0, price_event)
-                    break
-                if price_event.timestamp.date() < chk:
-                    cpl.insert(0, price_event)
-                    break
+        long_term_ma = MovingAverage(self.history, self.LONG_TERM_TIMESPAN)
+        short_term_ma = MovingAverage(self.history, self.SHORT_TERM_TIMESPAN)
+        try:
+            if self._is_crossover_below_to_above(on_date, short_term_ma, long_term_ma):
+                    return StockSignal.buy
 
-        # Return NEUTRAL signal
-        if len(closing_price_list) < 11:
-            return 0
+            if self._is_crossover_below_to_above(on_date, long_term_ma, short_term_ma):
+                    return StockSignal.sell
+        except NotEnoughDataException:
+            return StockSignal.neutral
 
-        # BUY signal
-        if sum([update.price for update in cpl[-11:-1]])/10 \
-                > sum([update.price for update in cpl[-6:-1]])/5 \
-            and sum([update.price for update in cpl[-10:]])/10 \
-                < sum([update.price for update in cpl[-5:]])/5:
-                    return 1
-
-        # BUY signal
-        if sum([update.price for update in cpl[-11:-1]])/10 \
-                < sum([update.price for update in cpl[-6:-1]])/5 \
-            and sum([update.price for update in cpl[-10:]])/10 \
-                > sum([update.price for update in cpl[-5:]])/5:
-                    return -1
-
-        # NEUTRAL signal
         return StockSignal.neutral
