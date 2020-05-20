@@ -51,6 +51,12 @@ class Stock:
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
         closing_price_list = \
             self._get_closing_price_list(on_date, NUM_DAYS)
+
+        long_term_series = closing_price_list[-self.LONG_TERM_TIMESPAN:]
+        prev_long_term_series = closing_price_list[-self.LONG_TERM_TIMESPAN-1:-1]
+        short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN:]
+        prev_short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN-1:-1]
+
         long_term_ma = MovingAverage(self.history, self.LONG_TERM_TIMESPAN)
         short_term_ma = MovingAverage(self.history, self.SHORT_TERM_TIMESPAN)
         try:
