@@ -57,6 +57,12 @@ class Stock:
         short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN:]
         prev_short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN-1:-1]
 
+        if sum([update.price for update in prev_long_term_series])/10 \
+            > sum([update.price for update in prev_short_term_series])/5 \
+            and sum([update.price for update in long_term_series])/10 \
+                < sum([update.price for update in short_term_series])/5:
+                return StockSignal.buy   
+
         long_term_ma = MovingAverage(self.history, self.LONG_TERM_TIMESPAN)
         short_term_ma = MovingAverage(self.history, self.SHORT_TERM_TIMESPAN)
         try:
