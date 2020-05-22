@@ -47,6 +47,14 @@ class Stock:
                     closing_price_list.insert(0, price_event)
         return closing_price_list
 
+    def _is_short_term_crossover_below_to_above(self, prev_short_term_ma, prev_long_term_ma, short_term_ma, long_term_ma):
+        return prev_long_term_ma > prev_short_term_ma \
+            and_long_term_ma < short_term_ma
+
+    def _is_short_term_crossover_above_to_below(self, prev_short_term_ma, short_term_ma, long_term_ma):
+        return prev_long_term_ma < prev_short_term_ma \
+            and long_term_ma > short_term_ma
+
     def get_crossover_signal(self, on_date):
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
         closing_price_list = \
