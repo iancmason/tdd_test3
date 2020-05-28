@@ -18,6 +18,7 @@ class Stock:
     def __init__(self, symbol):
         self.symbol = symbol
         self.price_history = []
+        self.history = TimeSeries()
 
     @property
     def price(self):
